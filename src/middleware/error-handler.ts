@@ -3,6 +3,7 @@ import { ZodError } from "zod";
 import { Prisma } from "@prisma/client";
 import { AppError } from "@/exceptions/app-error";
 import { env } from "@/config/env";
+import { logger } from "@/utils/logger";
 
 export function errorHandler(
   err: unknown,
@@ -31,7 +32,7 @@ export function errorHandler(
     return;
   }
 
-  console.error("Unhandled error:", err);
+  logger.error("Unhandled error", { err });
   res.status(500).json({
     error: "Internal server error",
     ...(env.NODE_ENV !== "production" && err instanceof Error
